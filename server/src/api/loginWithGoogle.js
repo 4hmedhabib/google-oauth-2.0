@@ -13,7 +13,8 @@ router.get(
 	passport.authenticate('google', {
 		failureMessage: 'Cannot login to Google, please try again later!',
 		failureRedirect: errorLoginUrl,
-		successRedirect: successLoginUrl
+		successRedirect: successLoginUrl,
+		successMessage: 'You Logged IN'
 	}),
 	(req, res) => {
 		console.log('User =========', req.user);
