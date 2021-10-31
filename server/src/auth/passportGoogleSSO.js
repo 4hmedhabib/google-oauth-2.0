@@ -18,18 +18,6 @@ passport.use(
 				googleId: profile.id
 			};
 
-			const isUser = await User.findOne({ where: { googleId: profile.id } })
-				.then((user) => {
-					if (!user) {
-						console.log('======================== User Does not Exists', profile.displayName);
-						return;
-					}
-					console.log('======================== User Is Exists', profile.displayName);
-				})
-				.catch((err) => {
-					cb(err, null);
-				});
-
 			const user = await User.findOrCreate({
 				where: { googleId: profile.id },
 				defaults: defaultUser
