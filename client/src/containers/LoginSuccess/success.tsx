@@ -7,5 +7,5 @@ export function LoginSuccess() {
 		}, 1000);
 	}, []);
 
-	return <div>Thanks for login in</div>;
+	return <div>Thanks for loggin in</div>
 }

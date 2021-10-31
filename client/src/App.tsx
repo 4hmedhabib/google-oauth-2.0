@@ -1,9 +1,10 @@
+import axios from 'axios';
 import React from 'react';
 import GoogleButton from 'react-google-button';
 import {  Switch, Route, Link } from 'react-router-dom';
 
 import styled from 'styled-components'
-import { Success } from './containers';
+import { Success } from './containers/index';
  
 
 const AppContainer = styled.div`
@@ -17,10 +18,31 @@ const AppContainer = styled.div`
 `;
 
 const App: React.FC = () => {
+  
+  const fetchAuthUser = async () => {
+    const response = await axios.get('http://localhost:5000/api/v1/auth/user', {withCredentials: true});
+
+    if(response && response.data){
+      console.log('User : ', response.data )
+    }
+  }
 
   const redirectToGoogleSSO = async () => {
+    let timer: NodeJS.Timeout | null = null;
     const googleLoginUrl = 'http://localhost:5000/api/v1/login/google'
     const newWindow = window.open(googleLoginUrl, '_blank', "width=400,height=500");
+
+    if(newWindow){
+      timer = setInterval(()=>{
+        if(newWindow.closed){
+          console.log("Yep we're authenticated");
+          fetchAuthUser()
+          if(timer){
+            clearInterval(timer)
+          }
+        }
+      }, 5000)
+    }
   }
   
   
