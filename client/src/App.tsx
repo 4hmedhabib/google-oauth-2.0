@@ -6,8 +6,8 @@ import styled from 'styled-components'
  
 
 const AppContainer = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,22 +16,31 @@ const AppContainer = styled.div`
 `;
 
 const App: React.FC = () => {
+
+  const redirectToGoogleSSO = async () => {
+    const googleLoginUrl = 'http://localhost:5000/api/v1/login/google'
+    const newWindow = window.open(googleLoginUrl, '_blank', "width=400,height=500");
+  }
+  
+  
   return (
     <AppContainer>
-      <div className="container">
         <Switch>
           <Route path="/"  exact>
             Welcome Home!, 
-            <Link to=''>Login</Link>
+            <Link to='/login'>Login</Link>
           </Route>
           <Route path='/login' exact>
-            <GoogleButton />
+            <GoogleButton onClick={redirectToGoogleSSO} />
           </Route>
-          <Route>
+          <Route path='/login/error'>
             <h1>Erro Login, Please try agian later!</h1>
           </Route>
+          <Route path='*'>
+            <h1>Nof Found</h1>
+          </Route>
+
         </Switch>
-      </div>
     </AppContainer>
   )
 }
