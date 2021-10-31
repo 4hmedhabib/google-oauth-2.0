@@ -3,6 +3,7 @@ import GoogleButton from 'react-google-button';
 import {  Switch, Route, Link } from 'react-router-dom';
 
 import styled from 'styled-components'
+import { Success } from './containers';
  
 
 const AppContainer = styled.div`
@@ -33,6 +34,7 @@ const App: React.FC = () => {
           <Route path='/login' exact>
             <GoogleButton onClick={redirectToGoogleSSO} />
           </Route>
+          <Route path='/login/success' component={Success} />
           <Route path='/login/error'>
             <h1>Erro Login, Please try agian later!</h1>
           </Route>
