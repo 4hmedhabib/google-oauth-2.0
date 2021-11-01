@@ -1,10 +1,12 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import GoogleButton from 'react-google-button';
-import {  Switch, Route, Link } from 'react-router-dom';
+import {  Switch, Route, Link,useHistory } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux'
 
 import styled from 'styled-components'
 import { Success } from './containers/index';
+import { setAuthUser, setIsAuthenticated } from './context/appSlice';
  
 
 const AppContainer = styled.div`
@@ -18,12 +20,23 @@ const AppContainer = styled.div`
 `;
 
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector((state: any) => state .app.authUser as any) as any
   
   const fetchAuthUser = async () => {
-    const response = await axios.get('http://localhost:5000/api/v1/auth/user', {withCredentials: true});
+    const response = await axios.get('http://localhost:5000/api/v1/auth/user', {withCredentials: true}).catch((err) => {
+      console.log('Not properly authenticated');
+      dispatch(setIsAuthenticated(false))
+      dispatch(setAuthUser(null))
+      history.push('/login/error')
+    });
 
     if(response && response.data){
-      console.log('User : ', response.data )
+      console.log('User : ', response.data );
+      dispatch(setIsAuthenticated(true))
+      dispatch(setAuthUser(response.data))
+      history.push('/welcome')
     }
   }
 
@@ -56,6 +69,9 @@ const App: React.FC = () => {
           <Route path='/login' exact>
             <GoogleButton onClick={redirectToGoogleSSO} />
           </Route>
+          <Route path='/welcome'>
+          Welcome Back, {user && user.fullName}
+          </Route>  
           <Route path='/login/success' component={Success} />
           <Route path='/login/error'>
             <h1>Erro Login, Please try agian later!</h1>
@@ -69,4 +85,4 @@ const App: React.FC = () => {
   )
 }
 
-export default App
+export default App;

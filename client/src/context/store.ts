@@ -1,11 +1,11 @@
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit'
 import ReduxLogger from 'redux-logger'
-import AppSlice from './appSlice';
+import AppReducer from './appSlice';
 
 export const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(ReduxLogger),
     reducer: {
-        app: AppSlice
+        app: AppReducer
     }
 });
 

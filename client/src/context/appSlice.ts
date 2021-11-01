@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import App from '../App';
 
 interface IAppState {
     isAuthenticated: boolean,
